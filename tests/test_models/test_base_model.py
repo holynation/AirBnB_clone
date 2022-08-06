@@ -3,10 +3,9 @@
 Unittest for BaseModel class
 """
 import unittest
-import os
 import pep8
+import os
 from models.base_model import BaseModel
-
 
 class TestBaseModel(unittest.TestCase):
 
@@ -19,11 +18,15 @@ class TestBaseModel(unittest.TestCase):
 	@classmethod
 	def tearDownClass(cls):
 		del cls.base_temp
+		try:
+            os.remove("file.json")
+        except FileNotFoundError:
+            pass
 
 	def test_styles_check(self):
 		style = pep8.StyleGuide(quiet=True)
 		p = style.check_files(['models/base_model.py'])
-		self.assertEqual(p.total_errors,0, "fix pep8")
+		self.assertEqual(p.total_errors,0, "kindly fix pep8 issues")
 
 	def test_check_none_for_methods(self):
 		self.assertIsNotNone(BaseModel.__doc__)
@@ -43,7 +46,7 @@ class TestBaseModel(unittest.TestCase):
 		self.assertNotEqual(self.base_temp.created_at, self.base_temp.updated_at)
 
 	def test_to_dict(self):
-		base_temp_dict = self.base_temp.to_dict()
+		base_temp_dict = self.base_temp.to_dict()  # convert to dict
 		self.assertEqual(self.base_temp.__class__.__name__, 'BaseModel')
 		self.assertIsNotNone(base_temp_dict['id'])
 		self.assertIsNotNone(base_temp_dict['created_at'])
