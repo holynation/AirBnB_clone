@@ -5,6 +5,12 @@ This is the entry to command interpreter
 import cmd
 from models.base_model import BaseModel
 from models import storage
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -13,8 +19,8 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = "(hbnb)"  # this is a public instance variable from cmd
-    classes = {"BaseModel", "State", "City",
-               "Amenity", "Place", "Review", "User"}
+    classes = {"Amenity", "BaseModel", "City", "Place",
+               "Review", "State", "User"}
 
     def do_EOF(self, line):
         """Exits after receiving the EOF signal"""
@@ -137,8 +143,8 @@ def validateInstance(line, obj_dict):
     try:
         if args[1]:
             name = "{}.{}".format(args[0], args[1])
-            # since obj_dict had been passed from models, it has been
-            # reload already in the magic file __init__.py
+            # since obj_dict was passed from models, it has been
+            # reloaded already in the magic file __init__.py
             try:
                 value = obj_dict[name]
                 return True, name

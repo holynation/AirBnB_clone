@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Unittest for user model
+Unittest for User model
 """
 import unittest
 import os
@@ -62,6 +62,7 @@ class TestUser(unittest.TestCase):
     def test_save(self):
         self.my_user.save()
         self.assertNotEqual(self.my_user.created_at, self.my_user.updated_at)
+
 
 if __name__ == "__main__":
     unittest.main()
