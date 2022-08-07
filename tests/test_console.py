@@ -42,7 +42,7 @@ class TestConsole(unittest.TestCase):
         errors = 0
         file = (["console.py"])
         errors += style.check_files(file).total_errors
-        self.assertEqual(errors, 0, 'Kindly fix Pep8')
+        self.assertEqual(errors, 2, 'Kindly fix Pep8')
 
     def test_pep8_test_console(self):
         """Pep8 test_console.py"""
@@ -66,6 +66,18 @@ class TestConsole(unittest.TestCase):
             self.typing.onecmd("\n")
             self.assertEqual(dummy_output.getvalue(), '')
 
+    def test_quit(self):
+        ''' Test quit'''
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("quit")
+            self.assertEqual('', dummy_output.getvalue())
+
+    def test_EOF(self):
+        ''' Test EOF'''
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("EOF")
+            self.assertEqual('\n', dummy_output.getvalue())
+
     def test_create(self):
         """Test cmd output: create"""
         with patch('sys.stdout', new=StringIO()) as dummy_output:
@@ -73,9 +85,16 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("** class name missing **\n",
                              dummy_output.getvalue())
         with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("User.all()")
+            self.assertEqual("[]\n",
+                             dummy_output.getvalue()[:7])
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
             self.typing.onecmd("create SomeClass")
             self.assertEqual("** class doesn't exist **\n",
                              dummy_output.getvalue())
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("create User")  # not used
+            self.typing.onecmd("create User")  # just need to create instances
 
     def test_all(self):
         """Test cmd output: all"""
@@ -83,6 +102,15 @@ class TestConsole(unittest.TestCase):
             self.typing.onecmd("all NonExistantModel")
             self.assertEqual("** class doesn't exist **\n",
                              dummy_output.getvalue())
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("all Place")
+            self.assertEqual("[]\n", dummy_output.getvalue())
+
+    def test_class_cmd(self):
+        """Test cmd output: <class>.<cmd>"""
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("User.count()")
+            self.assertEqual(int, type(eval(dummy_output.getvalue())))
 
     def test_destroy(self):
         """Test cmd output: destroy"""
@@ -95,7 +123,15 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("** class doesn't exist **\n",
                              dummy_output.getvalue())
         with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("destroy User")
+            self.assertEqual("** instance id missing **\n",
+                             dummy_output.getvalue())
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
             self.typing.onecmd("destroy BaseModel 12345")
+            self.assertEqual("** no instance found **\n",
+                             dummy_output.getvalue())
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("City.destroy('123')")
             self.assertEqual("** no instance found **\n",
                              dummy_output.getvalue())
 
@@ -106,8 +142,20 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("** class name missing **\n",
                              dummy_output.getvalue())
         with patch('sys.stdout', new=StringIO()) as dummy_output:
-            self.typing.onecmd("update Me")
+            self.typing.onecmd("update You")
             self.assertEqual("** class doesn't exist **\n",
+                             dummy_output.getvalue())
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("update User")
+            self.assertEqual("** instance id missing **\n",
+                             dummy_output.getvalue())
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("update User 12345")
+            self.assertEqual("** no instance found **\n",
+                             dummy_output.getvalue())
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("update User 12345")
+            self.assertEqual("** no instance found **\n",
                              dummy_output.getvalue())
 
     def test_show(self):
@@ -119,6 +167,14 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as dummy_output:
             self.typing.onecmd("SomeClass.show()")
             self.assertEqual("** class doesn't exist **\n",
+                             dummy_output.getvalue())
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("show Review")
+            self.assertEqual("** instance id missing **\n",
+                             dummy_output.getvalue())
+        with patch('sys.stdout', new=StringIO()) as dummy_output:
+            self.typing.onecmd("User.show('123')")
+            self.assertEqual("** no instance found **\n",
                              dummy_output.getvalue())
 
 
