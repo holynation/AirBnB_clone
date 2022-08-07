@@ -7,6 +7,7 @@ import pep8
 import os
 from models.base_model import BaseModel
 
+
 class TestBaseModel(unittest.TestCase):
 
     @classmethod
@@ -26,7 +27,7 @@ class TestBaseModel(unittest.TestCase):
     def test_styles_check(self):
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/base_model.py'])
-        self.assertEqual(p.total_errors,0, "kindly fix pep8 issues")
+        self.assertEqual(p.total_errors, 0, "kindly fix pep8 issues")
 
     def test_check_none_for_methods(self):
         self.assertIsNotNone(BaseModel.__doc__)
@@ -43,7 +44,8 @@ class TestBaseModel(unittest.TestCase):
 
     def test_save(self):
         self.base_temp.save()
-        self.assertNotEqual(self.base_temp.created_at, self.base_temp.updated_at)
+        self.assertNotEqual(self.base_temp.created_at,
+                            self.base_temp.updated_at)
 
     def test_to_dict(self):
         base_temp_dict = self.base_temp.to_dict()  # convert to dict
@@ -54,6 +56,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(base_temp_dict['id'], str)
         self.assertIsInstance(base_temp_dict['created_at'], str)
         self.assertIsInstance(base_temp_dict['updated_at'], str)
+
 
 if __name__ == "__main__":
     unittest.main()
