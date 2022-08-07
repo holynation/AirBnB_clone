@@ -3,16 +3,14 @@
 This is the entry to command interpreter
 """
 import cmd
-import ast
-import json
-from models.base_model import BaseModel
 from models import storage
+from models.base_model import BaseModel
+from models.user import User
 from models.amenity import Amenity
-from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
-from models.user import User
+from models.city import City
 
 
 class HBNBCommand(cmd.Cmd):
@@ -21,8 +19,11 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = "(hbnb) "  # this is a public instance variable from cmd
-    classes = {"Amenity", "BaseModel", "City", "Place",
-               "Review", "State", "User"}
+    classes = {
+        "Amenity", "BaseModel",
+        "City", "Place",
+        "Review", "State", "User"
+    }
 
     def do_EOF(self, line):
         """Exits after receiving the EOF signal"""
@@ -58,8 +59,8 @@ class HBNBCommand(cmd.Cmd):
         new_storage = storage.all()
         response = validateInstance(line, new_storage)
 
-        if (((isinstance(response[0], bool)) and response[0] is False)
-                and isinstance(response[1], str)):
+        if (((isinstance(response[0], bool)) and response[0] is False) and
+           isinstance(response[1], str)):
             print(response[1])  # this would mean error
             return
         else:
@@ -71,8 +72,8 @@ class HBNBCommand(cmd.Cmd):
         new_storage = storage.all()
         response = validateInstance(line, new_storage)
 
-        if (((isinstance(response[0], bool)) and response[0] is False)
-                and isinstance(response[1], str)):
+        if (((isinstance(response[0], bool)) and response[0] is False) and
+           isinstance(response[1], str)):
             print(response[1])  # this would mean error
             return
         else:
@@ -147,9 +148,11 @@ class HBNBCommand(cmd.Cmd):
         """
         method_call_name = None
         method_args = None
-        functions = {"all": self.do_all, "update": self.do_update,
-                     "show": self.do_show, "count": self.do_count,
-                     "destroy": self.do_destroy, "update": self.do_update}
+        functions = {
+            "all": self.do_all, "update": self.do_update,
+            "show": self.do_show, "count": self.do_count,
+            "destroy": self.do_destroy, "create": self.do_create
+        }
         args = line.split('.')
         class_arg = args[0]
         if len(args) == 1:
@@ -238,7 +241,7 @@ def validateInstance(line, obj_dict):
             # since obj_dict was passed from models, it has been
             # reloaded already in the magic file __init__.py
             try:
-                value = obj_dict[name]
+                obj_dict[name]
                 return True, name
             except KeyError:
                 return False, "** no instance found **"

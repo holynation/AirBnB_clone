@@ -7,17 +7,7 @@ from unittest.mock import patch
 from io import StringIO
 import pep8
 import os
-import json
 import console
-import tests
-from models.amenity import Amenity
-from models.base_model import BaseModel
-from models.city import City
-from models.state import State
-from models.place import Place
-from models.review import Review
-from models.user import User
-from models.engine.file_storage import FileStorage
 
 
 class TestConsole(unittest.TestCase):
@@ -36,14 +26,13 @@ class TestConsole(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-    """Check for Pep8 style conformity"""
     def test_pep8_console(self):
         """Pep8 console.py"""
         style = pep8.StyleGuide(quiet=False)
         errors = 0
         file = (["console.py"])
         errors += style.check_files(file).total_errors
-        self.assertEqual(errors, 2, 'Kindly fix Pep8')
+        self.assertEqual(errors, 0, 'Kindly fix Pep8')
 
     def test_pep8_test_console(self):
         """Pep8 test_console.py"""
@@ -53,7 +42,6 @@ class TestConsole(unittest.TestCase):
         errors += style.check_files(file).total_errors
         self.assertEqual(errors, 0, 'Kindly fix Pep8')
 
-    """Check for docstring existance"""
     def test_docstrings_in_console(self):
         """Test docstrings exist in console.py"""
         self.assertTrue(len(console.__doc__) >= 1)
@@ -62,7 +50,6 @@ class TestConsole(unittest.TestCase):
         """Test docstrings exist in test_console.py"""
         self.assertTrue(len(self.__doc__) >= 1)
 
-    """Test command interpreter outputs"""
     def test_emptyline(self):
         """Test no user input"""
         with patch('sys.stdout', new=StringIO()) as dummy_output:

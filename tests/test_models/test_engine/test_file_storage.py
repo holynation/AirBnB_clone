@@ -4,7 +4,6 @@ Unittest for FileStorage class
 """
 import unittest
 import pep8
-import json
 import os
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
@@ -12,7 +11,7 @@ from models.engine.file_storage import FileStorage
 
 class TestFileStorage(unittest.TestCase):
     """docstring for TestFileStorage"""
-    
+
     @classmethod
     def tearDownClass(cls):
         try:
@@ -47,7 +46,8 @@ class TestFileStorage(unittest.TestCase):
 
     def test_new(self):
         """
-        Tests method: new (sets in __objects the obj with key <obj class name>.id)
+        Tests method: new (sets in __objects the obj
+        with key <obj class name>.id)
         """
         new_storage = FileStorage()
         instances_dic = new_storage.all()
@@ -68,11 +68,12 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload(self):
         """
-        Tests method: reload (deserializes the JSON file to __objects if exists)
+        Tests method: reload (deserializes the
+        JSON file to __objects if exists)
         """
         try:
             storage = FileStorage()
             storage.reload()
             self.assertTrue(True)
-        except:
+        except ValueError:
             self.assertTrue(False)
