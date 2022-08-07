@@ -58,8 +58,8 @@ class HBNBCommand(cmd.Cmd):
         new_storage = storage.all()
         response = validateInstance(line, new_storage)
 
-        if (((isinstance(response[0], bool)) and response[0] is False)
-                and isinstance(response[1], str)):
+        if (((isinstance(response[0], bool)) and response[0] is False) and
+           isinstance(response[1], str)):
             print(response[1])  # this would mean error
             return
         else:
@@ -71,8 +71,8 @@ class HBNBCommand(cmd.Cmd):
         new_storage = storage.all()
         response = validateInstance(line, new_storage)
 
-        if (((isinstance(response[0], bool)) and response[0] is False)
-                and isinstance(response[1], str)):
+        if (((isinstance(response[0], bool)) and response[0] is False) and
+           isinstance(response[1], str)):
             print(response[1])  # this would mean error
             return
         else:

@@ -42,7 +42,7 @@ class TestConsole(unittest.TestCase):
         errors = 0
         file = (["console.py"])
         errors += style.check_files(file).total_errors
-        self.assertEqual(errors, 2, 'Kindly fix Pep8')
+        self.assertEqual(errors, 0, 'Kindly fix Pep8')
 
     def test_pep8_test_console(self):
         """Pep8 test_console.py"""
