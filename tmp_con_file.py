@@ -103,7 +103,14 @@ class HBNBCommand(cmd.Cmd):
         and id by adding or updating attribute
         """
         new_storage = storage.all()
-        args = parse(line)
+        if ";;;" in line:
+            args = line.split(';;;')
+            args3 = args[2]
+            dictionary = dict(subString.split(":") for subString in args3.split(","))
+            my_new_model = BaseModel(**dictionary)
+            return;
+        else:
+            args = parse(line)
         if len(args) >= 4:
             key = "{}.{}".format(args[0], args[1])
             attr_cast = type(eval(args[3]))
@@ -187,14 +194,12 @@ class HBNBCommand(cmd.Cmd):
                 # item 1 would be the id
                 id_arg = args[0].strip("'")
                 id_arg = id_arg.strip('"')
-                # while d rest is d other
-                # args({'first_name': "John", "age": 89})
+                # while d rest is d other args({'first_name': "John", "age": 89})
                 if args[1].lstrip(' ').startswith('{'):
                     attr_dict = str(args[1]) + ',' + str(args[2])
                     arg = attr_dict.rstrip(')')
-                    # dictionary = dict(subString.split(":")
-                    # for subString in arg.split(","))
-                    method_args = class_arg + ' ' + id_arg + ' ' + str(arg)
+                    # dictionary = dict(subString.split(":") for subString in arg.split(","))
+                    method_args = class_arg + ';;;' + id_arg + ';;;' + str(arg.strip(" "))
                 else:
                     attr_name = args[1].strip(',')
                     attr_val = args[2]
